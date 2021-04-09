@@ -106,7 +106,7 @@ public class Seller implements Serializable {
 				+ ", \nemail: "+ email 
 				+ ", \nbirthDate: " + birthDate
 				+ ", \nsalary: "+ baseSalary 
-				+ ", \ndepartment: " + department;
+				+ ", \ndepartment: " + department + "\n";
 	}
 	
 
