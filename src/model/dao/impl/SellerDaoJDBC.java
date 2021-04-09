@@ -25,7 +25,7 @@ public class SellerDaoJDBC implements SellerDao {
 		this.conn = conn;
 	}
 
-	// # ---> INSERÇÃo DE DADOS <--- #
+	// # ---> MÉTODO PARA INSERIR DADOS <--- #
 	
 	@Override
 	public void insert(Seller obj) {
@@ -66,7 +66,7 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 	}
 	
-	// # ---> ATUALIZAÇÃO DE DADOS <--- #
+	// # ---> MÉTODO PARA ATUALIZAÇÃO DE DADOS <--- #
 
 	@Override
 	public void uppdate(Seller obj) {
@@ -90,10 +90,29 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 
 	}
+	
+	// # ---> MÉTODO PARA DELETAR DADOS <--- #
 
 	@Override
 	public void deleteById(Integer id) {
-		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller "
+					+ " WHERE "
+					+ "id = ?");
+			st.setInt(1, id);
+			int rowsAffected = st.executeUpdate();
+			
+			if (rowsAffected == 0) {
+				throw new DbException("Unexist id");
+			}
+			
+		}catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 	}
 	
 //		# ---> MÉTODOS PARA ENCONTRAR VENDEDORES E SEUS RESPECTIVOS DEPARTAMENTOS <--- #
@@ -131,7 +150,7 @@ public class SellerDaoJDBC implements SellerDao {
 		
 	}
 	
-//	SET DA TABELA DE VENDEDORES:
+	// #	SET DA TABELA DE VENDEDORES:
 	
 	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
 		Seller obj = new Seller();
@@ -144,7 +163,7 @@ public class SellerDaoJDBC implements SellerDao {
 		return obj;
 	}
 
-//	INSTANCIA DO DEPARTAMENTO: 
+	// #	INSTANCIA DO DEPARTAMENTO: 
 
 	private Department instatintiateDepartment(ResultSet rs) throws SQLException {
 		Department dep = new Department();
